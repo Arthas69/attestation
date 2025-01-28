@@ -141,8 +141,6 @@ class PriceMachine(object):
                 curr_search.append(item)
                 self.name_length = max(self.name_length, len(item['name']))
 
-        curr_search.sort(key=lambda x: x['price_per_kg'])
-
         self._print_header()
 
         for idx, product in enumerate(curr_search, start=1):
