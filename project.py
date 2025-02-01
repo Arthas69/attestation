@@ -68,6 +68,10 @@ class PriceMachine(object):
                 фасовка
         """
 
+        # Проходит по всем файлам в целевой папке, и если в названии файла присутствует слово 'price'
+        # обрабатывает его и добавляет все строчки в self.data.
+        # После этого сортируем получившийся список по параметру цена за кг.
+
         for path, dirs, files in os.walk(file_path):
             for file in files:
                 if 'price' in file.lower():
@@ -136,15 +140,22 @@ class PriceMachine(object):
         """
         curr_search = []
 
+        # Находит позиции с указанным текстом в названии и добавляет их в список curr_search
         for item in self.data:
             if txt in item['name'].lower():
                 curr_search.append(item)
                 self.name_length = max(self.name_length, len(item['name']))
 
-        self._print_header()
+        if curr_search:
+            # Печатает заголовок таблицы для вывода найденных результатов
+            self._print_header()
 
-        for idx, product in enumerate(curr_search, start=1):
-            self._print_line(idx, product)
+            # Выводит найденные позиции с учетом форматирования и выделения текста поиска
+            for idx, product in enumerate(curr_search, start=1):
+                self._print_line(idx, product)
+            print('----------------------------------------------------------------')
+        else:
+            print(f'Ничего не найдено по запросу "{txt}".')
 
         self.name_length = 0
 
@@ -159,7 +170,7 @@ if __name__ == '__main__':
         print('Чтобы выгрузить все позиции в файл, введите - 1')
         print('Чтобы выйти введите - exit')
         print('Введите наименование продукции, чтобы найти: ')
-        print()
+        print('----------------------------------------------------------------')
         text = input('Ваш выбор: ')
 
         if text == '1':
